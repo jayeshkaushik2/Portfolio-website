@@ -12,4 +12,4 @@ class PostSerializer(ModelSerializer):
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['profile_image', 'backprofile_image', 'about_user', 'profession']
+        fields = ['id', 'user', 'profile_image', 'backprofile_image', 'about_user', 'profession']

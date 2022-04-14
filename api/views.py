@@ -1,8 +1,27 @@
+from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from api.serializers import PostSerializer, ProfileSerializer
 from home.models import Post, Profile
+from django.contrib.auth.models import User
+
+
+@api_view(['GET', 'POST'])
+def admin_login(request, pk):
+    if request.method == 'GET':
+        user = User.objects.filter(id=pk).first()
+        if user is None:
+            return HttpResponse("user is None...")
+        if user.is_authenticated:
+            print(f"user {user} is logged in...")
+            profile = Profile.objects.filter(user=user).first()
+            sz = ProfileSerializer(instance=profile)
+            return Response(sz.data)
+        else:
+            return Response({})
+    else:
+        return HttpResponse("This is post")
 
 
 @api_view(['GET'])
@@ -40,14 +59,17 @@ def getProfile(request):
     '''
     user_id = 1
     try:
+        print("trying to get user id...")
         user_id = request.user.id
-        print(type(user_id))
+        print(user_id)
     except Exception as e:
-        print(e)
+        print("Failed to get user id...")
         pass
+    
+    if user_id is None:
+        user_id = 1
 
-    profile = Profile.objects.get(profile_user=1)
-    print(profile)
+    profile = Profile.objects.get(user=user_id)
     serializer = ProfileSerializer(profile, many=False)
 
     return Response(serializer.data)
