@@ -25,7 +25,7 @@ function Homepage() {
 
     return (
         <>
-            <ProfileHeader profileImage={profileDetails["profile_image"]} backprofileImage={profileDetails["backprofile_image"]} />
+            <ProfileHeader profileDetails={profileDetails} />
 
             <LikesViewsProjects />
 

@@ -32,17 +32,17 @@ export default function ProfieHeader(props) {
                 <Link className="btn btn-sm btn-secondary" id="signInBtn" to="/signin" element={<SignIn />}>Admin?</Link>
                 {/* <Link className="btn btn-sm btn-secondary" id="signInBtn" to="/admin">Admin?</Link> */}
                 {/* <a className="btn btn-sm btn-primary" id="signInBtn" href="/">Sign in/owner</a> */}
-                <img src={props.backprofileImage ? props.backprofileImage : backimage} className="img-fluid" id="backImage" alt="background img"></img>
+                <img src={props.profileDetails["backprofile_image"] ? props.profileDetails["backprofile_image"] : backimage} className="img-fluid" id="backImage" alt="background img"></img>
 
                 <div className="container" id="profileInfo">
 
                     <div className="profile_image">
-                        <img src={props.profileImage ? props.profileImage : defaultProfile} id="profileImage" onClick={profileView} alt="profile img"></img>
+                        <img src={props.profileDetails["profile_image"] ? props.profileDetails["profile_image"] : defaultProfile} id="profileImage" onClick={profileView} alt="profile img"></img>
                     </div>
 
                     <h4>Jayesh Kaushik</h4>
 
-                    <h6 id="proffesion">(Full stack developer)</h6>
+                    <h6 id="proffesion">{ props.profileDetails["profession"] ? props.profileDetails["profession"] : "profession"}</h6>
 
                 </div>
             </div>

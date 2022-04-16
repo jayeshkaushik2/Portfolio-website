@@ -7,5 +7,5 @@ urlpatterns = [
     path('getprofile/', views.getProfile, name='profile'),
 
     # path for admin login
-    path('admin/<str:pk>/', views.admin_login, name='admin')
+    path('admin-panel/<str:pk>/', views.admin_login, name='admin-panel')
 ]
