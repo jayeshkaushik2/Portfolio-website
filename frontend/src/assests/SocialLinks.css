@@ -5,12 +5,12 @@
     padding: 10px;
 }
 
-#p {
+.p-links {
     color: #646464;
     font-weight: bold;
     font-size: 14px;
 }
 
-#aLink {
+.a-link {
     font-weight: normal;
 }
