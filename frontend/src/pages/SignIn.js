@@ -11,7 +11,7 @@ const SignIn = () => {
     
 
     let getProfileImage = async () => {
-        let response = await fetch('/api/getprofile/')
+        let response = await fetch('/api/get-profile/')
         let data = await response.json()
         setprofileImage(data["profile_image"])
         

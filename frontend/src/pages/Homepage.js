@@ -10,17 +10,26 @@ import SkillsAndProject from '../components/SkillsAndProject'
 
 function Homepage() {
     const [profileDetails, setprofileDetails] = useState([]);
+    const [socailLinkDetails, setSocailLinkDetails] = useState([]);
 
     // Getting the profile details
     useEffect(() => {
         getProfileDetails()
+        getSocailLinkDetails()
     }, []);
 
     let getProfileDetails = async () => {
-        let response = await fetch('/api/getprofile/')
+        let response = await fetch('/api/get-profile/')
         let data = await response.json()
         console.log("profile details:", data)
         setprofileDetails(data)
+    }
+
+    let getSocailLinkDetails = async () => {
+        let response = await fetch('/api/get-sociallinks/')
+        let data = await response.json()
+        console.log("social links details:", data)
+        setSocailLinkDetails(data)
     }
 
     return (
@@ -31,7 +40,7 @@ function Homepage() {
 
             <About about={profileDetails["about_user"]} />
 
-            <SocialLinks />
+            <SocialLinks socailLinkDetails={socailLinkDetails} />
 
             <Education />
 

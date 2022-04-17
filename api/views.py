@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from api.serializers import PostSerializer, ProfileSerializer
-from home.models import Post, Profile
+from api.serializers import PostSz, ProfileSz, SocialLinkSz
+from home.models import Post, Profile, SocialLink
 from django.contrib.auth.models import User
 
 
@@ -16,7 +16,7 @@ def admin_login(request, pk):
         if user.is_authenticated:
             print(f"user {user} is logged in...")
             profile = Profile.objects.filter(user=user).first()
-            sz = ProfileSerializer(instance=profile)
+            sz = ProfileSz(instance=profile)
             return Response(sz.data)
         else:
             return Response({})
@@ -35,7 +35,7 @@ def getPosts(request):
     '''
 
     posts = Post.objects.all()
-    serializer = PostSerializer(posts, many=True)
+    serializer = PostSz(posts, many=True)
 
     return Response(serializer.data)
 
@@ -47,7 +47,7 @@ def getPost(request, pk):
     2. since we want only one post so --> many=False
     '''
     post = Post.objects.get(id=pk)
-    serializer = PostSerializer(post, many=False)
+    serializer = PostSz(post, many=False)
 
     return Response(serializer.data)
 
@@ -70,6 +70,27 @@ def getProfile(request):
         user_id = 1
 
     profile = Profile.objects.get(user=user_id)
-    serializer = ProfileSerializer(profile, many=False)
+    serializer = ProfileSz(profile, many=False)
 
     return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+def getSocialLink(request):
+    if request.method == "GET":
+        user_id = 1
+        try:
+            user_id = request.user.id
+        except Exception as e:
+            print("failed to get user id...")
+            pass
+
+        if user_id is None:
+            user_id = 1
+        
+        social_links = SocialLink.objects.get(user=user_id)
+        sz = SocialLinkSz(instance=social_links, many=False)
+
+        return Response(sz.data)
+    else:
+        return HttpResponse("This is social link post request...")
