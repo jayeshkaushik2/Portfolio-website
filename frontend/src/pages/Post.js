@@ -13,7 +13,7 @@ const Post = () => {
     }, [])
 
     let getPost = async () => {
-        let response = await fetch(`/api/getposts/${id}`)
+        let response = await fetch(`/api/get-posts/${id}`)
         let data = await response.json()
         console.log('Data:', data)
         setPost(data)

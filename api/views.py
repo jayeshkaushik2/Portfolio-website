@@ -92,3 +92,5 @@ def getSocialLink(request):
         sz = SocialLinkSz(instance=social_links, many=False)
 
         return Response(sz.data)
+    else:
+        return HttpResponse("This is social link post request...")

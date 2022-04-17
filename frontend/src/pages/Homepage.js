@@ -19,14 +19,14 @@ function Homepage() {
     }, []);
 
     let getProfileDetails = async () => {
-        let response = await fetch('/api/getprofile/')
+        let response = await fetch('/api/get-profile/')
         let data = await response.json()
         console.log("profile details:", data)
         setprofileDetails(data)
     }
 
     let getSocailLinkDetails = async () => {
-        let response = await fetch('/api/getsocial-links/')
+        let response = await fetch('/api/get-sociallinks/')
         let data = await response.json()
         console.log("social links details:", data)
         setSocailLinkDetails(data)
