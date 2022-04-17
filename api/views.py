@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
-from api.serializers import PostSz, ProfileSz, SocialLinkSz
-from home.models import Post, Profile, SocialLink
 from django.contrib.auth.models import User
+
+from home.models import Education, Post, Profile, SocialLink
+from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz
 
 
 @api_view(['GET', 'POST'])
@@ -94,3 +94,22 @@ def getSocialLink(request):
         return Response(sz.data)
     else:
         return HttpResponse("This is social link post request...")
+
+
+@api_view(['GET'])
+def getEducation(request):
+    if request.method == 'GET':
+        user_id = 1
+        try:
+            user_id = request.user.id
+        except Exception as e:
+            print("Failed to get the user id...")
+            pass
+        
+        if user_id is None:
+            user_id = 1
+        
+        education_details = Education.objects.filter(user=user_id)
+        sz = EducationSz(instance=education_details, many=True)
+        
+        return Response(sz.data)
