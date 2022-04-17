@@ -11,4 +11,8 @@ urlpatterns = [
 
     # path for social links
     path('get-sociallinks/', views.getSocialLink, name='sociallinks'),
+
+    # path for education details
+    path('get-education/', views.getEducation, name='education'),
+
 ]

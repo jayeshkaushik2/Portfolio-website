@@ -1,7 +1,7 @@
 from dataclasses import field
 from rest_framework.serializers import ModelSerializer
 
-from home.models import Post, Profile, SocialLink
+from home.models import Education, Post, Profile, SocialLink
 
 
 class PostSz(ModelSerializer):
@@ -34,4 +34,18 @@ class SocialLinkSz(ModelSerializer):
             "linkedin",
             "github",
             "coding",
+        ]
+
+class EducationSz(ModelSerializer):
+    class Meta:
+        model = Education
+        fields = [
+            "id",
+            "user",
+            "school",
+            "course",
+            "stream",
+            "start",
+            "end",
+            "marks",
         ]
