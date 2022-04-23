@@ -44,6 +44,7 @@ export default function SkillsAndProject(props) {
                                 </p>
                                 <a className="link-primary" href={props.projects[index]["link"]} id="projectLink">See project</a>
                             </div>
+                            {index < props.projects.length-1 ?<hr /> : ""}
                         </span>
                     )) : ""}
 
