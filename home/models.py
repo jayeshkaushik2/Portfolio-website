@@ -42,3 +42,15 @@ class Education(models.Model):
     
     def __str__(self):
         return self.school
+
+class Experience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    position = models.CharField(max_length=256, null=True, blank=True)
+    company = models.CharField(max_length=256, null=True, blank=True)
+    type = models.CharField(max_length=256, null=True, blank=True)
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.company

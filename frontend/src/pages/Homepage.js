@@ -13,6 +13,7 @@ function Homepage() {
     const [socailLinkDetails, setSocailLinkDetails] = useState([]);
     const [educationDetails, setEducationDetails] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [experience, setExperience] = useState([]);
 
 
     // Getting the profile details
@@ -21,7 +22,7 @@ function Homepage() {
         getSocailLinkDetails()
         getEducationDetails()
         getPosts()
-
+        getExperience()
     }, []);
 
     let getProfileDetails = async () => {
@@ -45,12 +46,18 @@ function Homepage() {
         setEducationDetails(data)
     }
 
-
     let getPosts = async () => {
         let response = await fetch('/api/get-posts/')
         let data = await response.json()
         console.log('posts data:', data)
         setPosts(data)
+    }
+
+    let getExperience = async () => {
+        let response = await fetch('/api/get-experience/')
+        let data = await response.json()
+        console.log('experience data:', data)
+        setExperience(data)
     }
 
     return (
@@ -65,7 +72,7 @@ function Homepage() {
             
             <Education educationDetails={educationDetails} />
 
-            <Experience />
+            <Experience experience={experience} />
 
             <SkillsAndProject />
 

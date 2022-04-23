@@ -2,20 +2,23 @@ import React from 'react'
 import '../assests/Experience.css'
 import avtarForCompany from '../assests/avtarForCompany.png'
 
-export default function Experience() {
+export default function Experience(props) {
     return (
         <>
             <div id="ExperienceDiv">
                 <p id="experienceText">Experience</p>
-                <div id="schoolDiv">
-                    <img src={avtarForCompany} id="defaultImg" alt="default school" />
+                {props.experience ? props.experience.map((key, index) => (
+                    <div id="schoolDiv">
+                        <img src={avtarForCompany} id="defaultImg" alt="default school" />
 
-                    <div id="content">
-                        <h6>Full Stack Developer</h6>
-                        <p id="score">Small bag delivery . Internship</p>
-                        <p>oct 2021 - present</p>
+                        <div id="content">
+                            <h6>{props.experience[index]["position"]}</h6>
+                            <p id="score">{props.experience[index]["company"]} . {props.experience[index]["type"]}</p>
+                            <p>{props.experience[index]["start"]} - {props.experience[index]["is_active"]? "Present" : props.experience[index]["end"] } </p>
+                            <p>{props.experience[index]["is_active"]}</p>
+                        </div>
                     </div>
-                </div>
+                )) : ""}
             </div>
         </>
     )
