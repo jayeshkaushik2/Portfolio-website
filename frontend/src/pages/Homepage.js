@@ -14,6 +14,8 @@ function Homepage() {
     const [educationDetails, setEducationDetails] = useState([]);
     const [posts, setPosts] = useState([]);
     const [experience, setExperience] = useState([]);
+    const [skills, setSkills] = useState([]);
+    const [projects, setProjects] = useState([]);
 
 
     // Getting the profile details
@@ -23,6 +25,8 @@ function Homepage() {
         getEducationDetails()
         getPosts()
         getExperience()
+        getSkill()
+        getProject()
     }, []);
 
     let getProfileDetails = async () => {
@@ -60,6 +64,20 @@ function Homepage() {
         setExperience(data)
     }
 
+    let getSkill = async () => {
+        let response = await fetch('/api/get-skill/')
+        let data = await response.json()
+        console.log('skills data:', data)
+        setSkills(data)
+    }
+
+    let getProject = async () => {
+        let response = await fetch('/api/get-project/')
+        let data = await response.json()
+        console.log('projects data:', data)
+        setProjects(data)
+    }
+
     return (
         <>
             <ProfileHeader profileDetails={profileDetails} />
@@ -74,7 +92,7 @@ function Homepage() {
 
             <Experience experience={experience} />
 
-            <SkillsAndProject />
+            <SkillsAndProject skills={skills} projects={projects} />
 
             <Posts posts={posts} />
         </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import backimage from '../assests/backimage1.gif'
 import defaultProfile from '../assests/defaultProfile.png'
 import SignIn from '../pages/SignIn'
@@ -40,7 +40,7 @@ export default function ProfieHeader(props) {
                         <img src={props.profileDetails["profile_image"] ? props.profileDetails["profile_image"] : defaultProfile} id="profileImage" onClick={profileView} alt="profile img"></img>
                     </div>
 
-                    <h4>Jayesh Kaushik</h4>
+                    <h4>{props.profileDetails["name"]}</h4>
 
                     <h6 id="proffesion">{ props.profileDetails["profession"] ? props.profileDetails["profession"] : "profession"}</h6>
 

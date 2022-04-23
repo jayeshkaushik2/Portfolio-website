@@ -16,10 +16,15 @@ urlpatterns = [
     path('get-sociallinks/', views.getSocialLink, name='sociallinks'),
 
     # path for education details
-    path('get-education/', views.getEducation, name='education'),
+    path('get-education/', views.getEducation, name='educations'),
 
     #path for experience details
-    path('get-experience/', views.getExperience, name='experience'),
+    path('get-experience/', views.getExperience, name='experiences'),
 
+    #path for experience details
+    path('get-skill/', views.getSkill, name='skills'),
+
+    #path for experience details
+    path('get-project/', views.getProject, name='projects'),
 ]
 urlpatterns += router.urls

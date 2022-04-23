@@ -8,7 +8,7 @@ export default function Experience(props) {
             <div id="ExperienceDiv">
                 <p id="experienceText">Experience</p>
                 {props.experience ? props.experience.map((key, index) => (
-                    <div id="schoolDiv">
+                    <div id="schoolDiv" key={index}>
                         <img src={avtarForCompany} id="defaultImg" alt="default school" />
 
                         <div id="content">

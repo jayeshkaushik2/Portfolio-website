@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from home.models import Education, Experience, Post, Profile, SocialLink
-from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz, ExperienceSz
+from home.models import Education, Experience, Post, Profile, Project, Skill, SocialLink
+from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz, ExperienceSz, SkillSz, ProjectSz
 
 
 @api_view(['GET', 'POST'])
@@ -130,6 +130,45 @@ def getExperience(request):
         
         return Response(sz.data)
     elif request.method == 'POST':
+        pass
+    else:
+        pass
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def getSkill(request):
+    if request.method == 'GET':
+        user_id = 1
+        try:
+            user_id = request.user.id
+        except Exception as e:
+            print("Failed to get the user id...")
+            pass
+        if user_id is None:
+            user_id = 1
+        skill_details = Skill.objects.filter(user=user_id)
+        sz = SkillSz(instance=skill_details, many=True)
+        return Response(sz.data)
+    elif request.medhod == 'POST':
+        pass
+    else:
+        pass
+
+@api_view(['GET', 'POST', 'DELETE'])
+def getProject(request):
+    if request.method == 'GET':
+        user_id = 1
+        try:
+            user_id = request.user.id
+        except Exception as e:
+            print("Failed to get the user id...")
+            pass
+        if user_id is None:
+            user_id = 1
+        project_details = Project.objects.filter(user=user_id)
+        sz = ProjectSz(instance=project_details, many=True)
+        return Response(sz.data)
+    elif request.medhod == 'POST':
         pass
     else:
         pass

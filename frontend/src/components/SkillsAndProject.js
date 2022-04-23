@@ -1,7 +1,7 @@
 import React from 'react'
 import '../assests/SkillsAndProject.css'
 
-export default function SkillsAndProject() {
+export default function SkillsAndProject(props) {
 
     function myFunction() {
         var dots = document.getElementById("dots1");
@@ -24,22 +24,29 @@ export default function SkillsAndProject() {
             <div id="SkillsAndProjectDiv">
                 <div>
                     <p id="skillsandprojectText">Skills & Projects</p>
-                    <h6>Python (programming language)</h6>
-                    <h6>Java</h6>
+                    {props.skills ? props.skills.map((key, index) => (
+                        <h6 key={index} className="skills">{props.skills[index]["skill_name"]}</h6>
+                    ))
+                        : ""}
                 </div>
 
                 <hr />
 
                 <div>
-                    <h6>1) Todos List</h6>
-                    <span id="projectDate">Sep 2021</span>
+                    {props.projects ? props.projects.map((key, index) => (
+                        <span key={index}>
+                            <h6>{index + 1}) {props.projects[index]["title"]}</h6>
+                            <span id="projectDate">{props.projects[index]["start"]} - {props.projects[index]["is_active"]? "Present" : props.projects[index]["end"]}</span>
 
-                    <div id="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scel<span id="dots1">...</span><span id="remainDescription">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span>
-                        <button onClick={myFunction} className="showBtn" id="seeDescriptionBtn">see more</button>
-                        </p>
-                        <a className="link-primary" href="#" id="projectLink">See project</a>
-                    </div>
+                            <div id="description">
+                                <p>{props.projects[index]["description"].slice(0, 70)}<span id="dots1">...</span><span id="remainDescription">{props.projects[index]["description"].slice(70, )}</span>
+                                    <button onClick={myFunction} className="showBtn" id="seeDescriptionBtn">see more</button>
+                                </p>
+                                <a className="link-primary" href={props.projects[index]["link"]} id="projectLink">See project</a>
+                            </div>
+                        </span>
+                    )) : ""}
+
                 </div>
             </div>
         </>

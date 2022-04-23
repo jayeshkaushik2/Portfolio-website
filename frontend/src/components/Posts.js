@@ -33,9 +33,9 @@ export default function Posts(props) {
                     <div className="postdiv" key={index}>
                         <div className="heading">
                             <h6 className="title"> {props.posts[index]["post_title"]} </h6>
+                            <Link to={"/post/" + post.id} className="link-primary viewPostLink" id={index} element={<Post />}>View more</Link>
                         </div>
                         <div className="postimageDiv">
-                            <Link to={"/post/" + post.id} className="link-primary viewPostLink" id={index} element={<Post />}>View Post</Link>
                             <img src={props.posts[index]["post_image"]} onClick={profileView} className="postimage" alt="postImg" id={index} />
                         </div>
                     </div>

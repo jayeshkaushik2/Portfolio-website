@@ -16,6 +16,7 @@ class Post(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name =  models.CharField(max_length=256, null=True, blank=True)
     profile_image = models.ImageField(blank=True)
     backprofile_image = models.ImageField(blank=True)
     about_user = models.TextField(null=True)
@@ -54,3 +55,22 @@ class Experience(models.Model):
 
     def __str__(self):
         return self.company
+
+class Skill(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    skill_name = models.CharField(max_length=256, null=True, blank=True)
+
+    def __str__(self):
+        return self.skill_name
+
+class Project(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    link = models.URLField(max_length=256, null=True, blank=True)
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
