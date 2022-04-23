@@ -18,5 +18,8 @@ urlpatterns = [
     # path for education details
     path('get-education/', views.getEducation, name='education'),
 
+    #path for experience details
+    path('get-experience/', views.getExperience, name='experience'),
+
 ]
 urlpatterns += router.urls

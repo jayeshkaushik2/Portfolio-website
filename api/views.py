@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from home.models import Education, Post, Profile, SocialLink
-from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz
+from home.models import Education, Experience, Post, Profile, SocialLink
+from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz, ExperienceSz
 
 
 @api_view(['GET', 'POST'])
@@ -110,3 +110,26 @@ def getEducation(request):
         sz = EducationSz(instance=education_details, many=True)
         
         return Response(sz.data)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def getExperience(request):
+    if request.method == 'GET':
+        user_id = 1
+        try:
+            user_id = request.user.id
+        except Exception as e:
+            print("Failed to get the user id...")
+            pass
+        
+        if user_id is None:
+            user_id = 1
+        
+        experience_details = Experience.objects.filter(user=user_id)
+        sz = ExperienceSz(instance=experience_details, many=True)
+        
+        return Response(sz.data)
+    elif request.method == 'POST':
+        pass
+    else:
+        pass
