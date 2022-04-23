@@ -8,7 +8,7 @@ export default function Education(props) {
             <div id="EducationDiv">
                 <p id="EducationText">Education</p>
                 {props.educationDetails ? props.educationDetails.map((key, index) => (
-                    <div id="schoolDiv">
+                    <div id="schoolDiv" key={index}>
                         <img src={avtar} id="defaultImg" alt="default school" />
 
                         <div id="content">

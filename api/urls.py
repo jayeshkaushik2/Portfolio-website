@@ -1,8 +1,11 @@
 from django.urls import path
 from . import views
+from rest_framework import routers
 
+router = routers.SimpleRouter()
+router.register(r'get-posts', views.Getpost, basename='posts')
 urlpatterns = [
-    path('get-posts/', views.getPosts, name='posts'),
+    # path('get-posts/', views.getPosts, name='posts'),
     path('get-posts/<str:pk>/', views.getPost, name='post'),
     path('get-profile/', views.getProfile, name='profile'),
 
@@ -16,3 +19,4 @@ urlpatterns = [
     path('get-education/', views.getEducation, name='education'),
 
 ]
+urlpatterns += router.urls

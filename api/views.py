@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-
+from rest_framework import viewsets
 from home.models import Education, Post, Profile, SocialLink
 from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz
 
@@ -24,8 +24,7 @@ def admin_login(request, pk):
         return HttpResponse("This is post")
 
 
-@api_view(['GET'])
-def getPosts(request):
+class Getpost(viewsets.ModelViewSet):
     '''
     1. getting all the posts from the database.
     2. serializing the data for the json response.
@@ -33,12 +32,10 @@ def getPosts(request):
 
     Note: "many" --> this specifies if it should converts a single object(when false) or multiple objects(when true)
     '''
-
-    posts = Post.objects.all()
-    serializer = PostSz(posts, many=True)
-
-    return Response(serializer.data)
-
+    serializer_class = PostSz
+    def get_queryset(self):
+        posts = Post.objects.all()
+        return posts
 
 @api_view(['GET'])
 def getPost(request, pk):

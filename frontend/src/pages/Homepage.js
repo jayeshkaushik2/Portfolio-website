@@ -12,12 +12,16 @@ function Homepage() {
     const [profileDetails, setprofileDetails] = useState([]);
     const [socailLinkDetails, setSocailLinkDetails] = useState([]);
     const [educationDetails, setEducationDetails] = useState([]);
+    const [posts, setPosts] = useState([]);
+
 
     // Getting the profile details
     useEffect(() => {
         getProfileDetails()
         getSocailLinkDetails()
         getEducationDetails()
+        getPosts()
+
     }, []);
 
     let getProfileDetails = async () => {
@@ -41,6 +45,14 @@ function Homepage() {
         setEducationDetails(data)
     }
 
+
+    let getPosts = async () => {
+        let response = await fetch('/api/get-posts/')
+        let data = await response.json()
+        console.log('posts data:', data)
+        setPosts(data)
+    }
+
     return (
         <>
             <ProfileHeader profileDetails={profileDetails} />
@@ -57,7 +69,7 @@ function Homepage() {
 
             <SkillsAndProject />
 
-            <Posts />
+            <Posts posts={posts} />
         </>
     )
 }
