@@ -1,3 +1,5 @@
+__pycache____pycache__/
+*.py[cod]
+
 env/
 media/
-__pycache__
