@@ -1,8 +1,7 @@
 from dataclasses import field
 from rest_framework.serializers import ModelSerializer
-
+from rest_framework import serializers
 from home.models import Education, Experience, Post, Profile, Project, Skill, SocialLink
-
 
 class PostSz(ModelSerializer):
     class Meta:
@@ -12,6 +11,9 @@ class PostSz(ModelSerializer):
 
 
 class ProfileSz(ModelSerializer):
+    total_posts = serializers.SerializerMethodField()
+    total_projects = serializers.SerializerMethodField()
+    total_certificates = serializers.SerializerMethodField()
     class Meta:
         model = Profile
         fields = [
@@ -22,8 +24,19 @@ class ProfileSz(ModelSerializer):
             "backprofile_image",
             "about_user",
             "profession",
+            "total_posts",
+            "total_projects",
+            "total_certificates",
         ]
 
+    def get_total_posts(self, obj):
+        return len(Post.objects.all())
+    
+    def get_total_projects(self, obj):
+        return len(Project.objects.all())
+
+    def get_total_certificates(self, obj):
+        return 0
 
 class SocialLinkSz(ModelSerializer):
     class Meta:
