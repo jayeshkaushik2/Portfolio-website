@@ -82,7 +82,7 @@ function Homepage() {
         <>
             <ProfileHeader profileDetails={profileDetails} />
 
-            <LikesViewsProjects />
+            <LikesViewsProjects total_certificates={profileDetails["total_certificates"]} total_posts={profileDetails["total_posts"]} total_projects={profileDetails["total_projects"]} />
 
             <About about={profileDetails["about_user"]} />
 
