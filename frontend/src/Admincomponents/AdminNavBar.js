@@ -16,9 +16,6 @@ export const AdminNavBar = () => {
                                 <Link className="nav-link" aria-current="page" to="/admin-profile">Profile</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/admin-about">Adout</Link>
-                            </li>
-                            <li className="nav-item">
                                 <Link className="nav-link" to="/admin-sociallinks">SocialLinks</Link>
                             </li>
                             <li className="nav-item">

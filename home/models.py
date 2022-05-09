@@ -17,8 +17,8 @@ class Post(models.Model):
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name =  models.CharField(max_length=256, null=True, blank=True)
-    profile_image = models.ImageField(blank=True)
-    backprofile_image = models.ImageField(blank=True)
+    profile_image = models.ImageField(blank=True, null=True)
+    backprofile_image = models.ImageField(blank=True, null=True)
     about_user = models.TextField(null=True)
     profession = models.CharField(null=True, max_length=255)
 

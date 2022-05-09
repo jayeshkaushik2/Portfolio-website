@@ -1,5 +1,4 @@
 import React from 'react'
-import { AdminAbout } from '../Admincomponents/AdminAbout';
 import { AdminBody } from '../Admincomponents/AdminBody';
 import { AdminCertificates } from '../Admincomponents/AdminCertificates';
 import { AdminEducation } from '../Admincomponents/AdminEducation';
@@ -17,9 +16,7 @@ export const AdminPage = (props) => {
         <div>
             <AdminNavBar />
             {props.name === "admin"? <AdminBody />: ""}
-
             {props.name === "profile"? <AdminProfile />: ""}
-            {props.name === "about"? <AdminAbout />: ""}
             {props.name === "sociallinks"? <AdminSocialLinks />: ""}
             {props.name === "education"? <AdminEducation />: ""}
             {props.name === "experiance"? <AdminExperiance />: ""}
