@@ -2,6 +2,7 @@ from dataclasses import field
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from home.models import Education, Experience, Post, Profile, Project, Skill, SocialLink
+from drf_extra_fields.fields import Base64ImageField
 
 class PostSz(ModelSerializer):
     class Meta:
@@ -14,6 +15,8 @@ class ProfileSz(ModelSerializer):
     total_posts = serializers.SerializerMethodField()
     total_projects = serializers.SerializerMethodField()
     total_certificates = serializers.SerializerMethodField()
+    profile_image = Base64ImageField()
+    backprofile_image = Base64ImageField()
     class Meta:
         model = Profile
         fields = [

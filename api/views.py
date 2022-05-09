@@ -1,3 +1,4 @@
+from functools import partial
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -49,28 +50,37 @@ def getPost(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def getProfile(request):
     '''
     This will give us the profile image of the user
     '''
-    user_id = 1
-    try:
-        print("trying to get user id...")
-        user_id = request.user.id
-        print(user_id)
-    except Exception as e:
-        print("Failed to get user id...")
-        pass
-    
-    if user_id is None:
+    if request.method == "GET":
         user_id = 1
+        try:
+            print("trying to get user id...")
+            user_id = request.user.id
+            print(user_id)
+        except Exception as e:
+            print("Failed to get user id...")
+            pass
+        
+        if user_id is None:
+            user_id = 1
 
-    profile = Profile.objects.get(user=user_id)
-    serializer = ProfileSz(profile, many=False)
+        profile = Profile.objects.get(user=user_id)
+        serializer = ProfileSz(profile, many=False)
 
-    return Response(serializer.data)
-
+        return Response(serializer.data)
+    else:
+        user_id = 1
+        breakpoint()
+        profile, created = Profile.objects.get_or_create(user=user_id)
+        sz = ProfileSz(instance=profile, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
+        return Response({"success":False})
 
 @api_view(['GET', 'POST'])
 def getSocialLink(request):
