@@ -31,7 +31,7 @@ export const AdminProfile = () => {
         console.log("data", data)
         let requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'multipart/form-data"' },
+            headers: { 'Content-Type': 'multipart/form-data' },
             body: JSON.stringify(data)
         };
         let response = await fetch('/api/get-profile/', requestOptions);
@@ -52,6 +52,7 @@ export const AdminProfile = () => {
                 profession: Profession,
             }
         postProfileData(data)
+        console.log(profileData)
     }
 
     return (
