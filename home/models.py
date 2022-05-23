@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import date
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -9,7 +8,7 @@ class Post(models.Model):
     post_image = models.ImageField(null=False)
     post_title = models.TextField(null=False)
     post_description = models.TextField(null=True)
-    post_date = models.DateField()
+    post_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.post_title[0:50]
@@ -37,9 +36,9 @@ class Education(models.Model):
     school = models.CharField(null=False, max_length=200)
     course = models.CharField(null=False, max_length=200)
     stream = models.CharField(null=False, max_length=200)
-    start = models.DateField()
-    end = models.DateField()
-    marks = models.FloatField()
+    start = models.DateField(null=True)
+    end = models.DateField(null=True)
+    marks = models.FloatField(null=True)
     
     def __str__(self):
         return self.school

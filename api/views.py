@@ -1,4 +1,3 @@
-from functools import partial
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -37,6 +36,10 @@ class Getpost(viewsets.ModelViewSet):
     def get_queryset(self):
         posts = Post.objects.all()
         return posts
+    
+    def perform_create(self, serializer):
+        post = Post.objects.create(user=User.objects.all()[0])
+        serializer.save(instance=post)
 
 @api_view(['GET'])
 def getPost(request, pk):
@@ -91,19 +94,21 @@ def getSocialLink(request):
         except Exception as e:
             print("failed to get user id...")
             pass
-
         if user_id is None:
             user_id = 1
-        
         social_links = SocialLink.objects.get(user=user_id)
         sz = SocialLinkSz(instance=social_links, many=False)
-
         return Response(sz.data)
     else:
-        return HttpResponse("This is social link post request...")
+        user_id = 1
+        sociallinks = SocialLink.objects.get(user=user_id)
+        sz = SocialLinkSz(instance=sociallinks, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
+        return Response({"success":False})
 
-
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def getEducation(request):
     if request.method == 'GET':
         user_id = 1
@@ -112,14 +117,22 @@ def getEducation(request):
         except Exception as e:
             print("Failed to get the user id...")
             pass
-        
         if user_id is None:
             user_id = 1
-        
         education_details = Education.objects.filter(user=user_id)
         sz = EducationSz(instance=education_details, many=True)
-        
         return Response(sz.data)
+    else:
+        user_id = 1
+        if "school" in request.data or "course" in request.data:
+            edu = Education.objects.filter(user=user_id, school=request.data["school"], course=request.data["course"]).first()
+        if edu is None:
+            edu = Education.objects.create(user=User.objects.all()[0])
+        sz = EducationSz(instance=edu, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
+        return Response({"success":False})
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -140,7 +153,12 @@ def getExperience(request):
         
         return Response(sz.data)
     elif request.method == 'POST':
-        pass
+        user_id = 1
+        experience = Experience.objects.create(user=User.objects.all()[0])
+        sz = ExperienceSz(instance=experience, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
     else:
         pass
 
@@ -159,8 +177,13 @@ def getSkill(request):
         skill_details = Skill.objects.filter(user=user_id)
         sz = SkillSz(instance=skill_details, many=True)
         return Response(sz.data)
-    elif request.medhod == 'POST':
-        pass
+    elif request.method == 'POST':
+        user_id = 1
+        skill = Skill.objects.create(user=User.objects.all()[0])
+        sz = SkillSz(instance=skill, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
     else:
         pass
 
@@ -178,7 +201,12 @@ def getProject(request):
         project_details = Project.objects.filter(user=user_id)
         sz = ProjectSz(instance=project_details, many=True)
         return Response(sz.data)
-    elif request.medhod == 'POST':
-        pass
+    elif request.method == 'POST':
+        user_id = 1
+        project = Project.objects.create(user=User.objects.all()[0])
+        sz = ProjectSz(instance=project, data=request.data, partial=True)
+        if sz.is_valid(raise_exception=True):
+            sz.save()
+            return Response(sz.data)
     else:
         pass
