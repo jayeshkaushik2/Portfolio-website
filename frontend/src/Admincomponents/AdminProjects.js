@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminProjects = () => {
   const [ProjectData, setProjectData] = useState(null)
@@ -16,20 +17,19 @@ export const AdminProjects = () => {
   let getProjectData = async () => {
     let response = await fetch('/api/get-project/')
     let data = await response.json()
-    console.log('projects data:', data)
     setProjectData(data)
   }
 
+  let {AuthTokens} = useContext(AuthContext)
+
   let postProjectData = async (data) => {
-    console.log("data", data)
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+String(AuthTokens.access) },
       body: JSON.stringify(data)
     };
     let response = await fetch('/api/get-project/', requestOptions);
     let response_data = await response.json();
-    console.log(response_data)
     getProjectData()
   }
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminPosts = () => {
   const [PostData, setPostData] = useState(null)
@@ -13,20 +14,19 @@ export const AdminPosts = () => {
   let getPostData = async () => {
     let response = await fetch('/api/get-posts/')
     let data = await response.json()
-    console.log('posts data:', data)
     setPostData(data)
   }
 
+  let {AuthTokens} = useContext(AuthContext)
+
   let postPostData = async (data) => {
-    console.log("data", data)
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+String(AuthTokens.access) },
       body: JSON.stringify(data)
     };
     let response = await fetch('/api/get-posts/', requestOptions);
     let response_data = await response.json();
-    console.log(response_data)
     getPostData()
   }
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import backimage from '../assests/backimage1.gif'
 import defaultProfile from '../assests/defaultProfile.png'
-import SignIn from '../pages/SignIn'
 import { Link } from 'react-router-dom'
 import '../assests/ProfileHeader.css'
 
@@ -29,7 +28,7 @@ export default function ProfieHeader(props) {
     return (
         <>
             <div id="header">
-                <Link className="btn btn-sm btn-secondary" id="signInBtn" to="/signin" element={<SignIn />}>Admin?</Link>
+                <Link className="btn btn-sm btn-secondary" id="signInBtn" to="/admin">Admin</Link>
                 {/* <Link className="btn btn-sm btn-secondary" id="signInBtn" to="/admin">Admin?</Link> */}
                 {/* <a className="btn btn-sm btn-primary" id="signInBtn" href="/">Sign in/owner</a> */}
                 <img src={props.profileDetails["backprofile_image"] ? props.profileDetails["backprofile_image"] : backimage} className="img-fluid" id="backImage" alt="background img"></img>

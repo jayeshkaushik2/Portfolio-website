@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminExperiance = () => {
   const [Experience, setExperience] = useState(null)
@@ -17,20 +18,19 @@ export const AdminExperiance = () => {
   let getExperienceDate = async () => {
     let response = await fetch('/api/get-experience/')
     let data = await response.json()
-    console.log('experience data:', data)
     setExperience(data)
   }
+  
+  let {AuthTokens} = useContext(AuthContext)
 
   let postExperienceDate = async (data) => {
-    console.log("data", data)
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+String(AuthTokens.access) },
       body: JSON.stringify(data)
     };
     let response = await fetch('/api/get-experience/', requestOptions);
     let response_data = await response.json();
-    console.log(response_data)
     getExperienceDate()
   }
 

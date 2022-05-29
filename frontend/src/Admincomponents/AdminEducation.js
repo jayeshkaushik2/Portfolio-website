@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminEducation = () => {
   const [EduData, setEduData] = useState(null)
@@ -9,6 +10,8 @@ export const AdminEducation = () => {
   const [End, setEnd] = useState("")
   const [Marks, setMarks] = useState("")
 
+  let {AuthTokens} = useContext(AuthContext)
+
   useEffect(() => {
     getEducationData()
   }, []);
@@ -16,20 +19,20 @@ export const AdminEducation = () => {
   let getEducationData = async () => {
     let response = await fetch('/api/get-education/')
     let data = await response.json()
-    console.log("education details", data)
     setEduData(data)
   }
 
   let postEducationData = async (data) => {
-    console.log("data", data)
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ String(AuthTokens.access)
+      },
       body: JSON.stringify(data)
     };
     let response = await fetch('/api/get-education/', requestOptions);
     let response_data = await response.json();
-    console.log(response_data)
     getEducationData()
   }
 
@@ -95,7 +98,7 @@ export const AdminEducation = () => {
             </tr>
           </thead>
           {EduData ? EduData.map((key, index) => (
-            <tbody>
+            <tbody key={index}>
               <tr>
                 <td>{index + 1}</td>
                 <td>{EduData[index]["school"]}</td>

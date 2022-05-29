@@ -9,55 +9,83 @@ import './App.css'
 import Homepage from "./pages/Homepage";
 import Post from "./pages/Post";
 import SignIn from "./pages/SignIn";
-import AddPost from "./components/AddPost";
 
 // admin pages
 import { AdminPage } from "./Adminpages/AdminPage";
-// import { AdminProfile } from "./Admincomponents/AdminProfile";
-// import { AdminAbout } from "./Admincomponents/AdminAbout";
-// import { AdminSocialLinks } from "./Admincomponents/AdminSocialLinks";
-// import { AdminEducation } from "./Admincomponents/AdminEducation";
-// import { AdminExperiance } from "./Admincomponents/AdminExperiance";
-// import { AdminSkills } from "./Admincomponents/AdminSkills";
-// import { AdminProjects } from "./Admincomponents/AdminProjects";
-// import { AdminPosts } from "./Admincomponents/AdminPosts";
-// import { AdminCertificates } from "./Admincomponents/AdminCertificates";
-// import { AdminBody } from "./Admincomponents/AdminBody";
+import { PrivateRoute } from "./utils/PrivateRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
+
   return (
     <BrowserRouter>
       <>
         <div className="App">
-          <Routes>
+          <AuthProvider>
+            <Routes>
+              {/* public pages */}
+              <Route path="/" exact element={
+                  <Homepage />} />
 
-            <Route path="/" exact element={<Homepage />} />
-            <Route path="/post/:id" element={<Post />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/addpost" element={<AddPost />} />
-            <Route path="/admin" element={<AdminPage name="admin" />} />
+              <Route path="/post/:id/" element={
+                  <Post />} />
 
-            <Route exact path="/admin-profile" element={<AdminPage name="profile" />} />
-            <Route exact path="/admin-about" element={<AdminPage name="about" />} />
-            <Route exact path="/admin-sociallinks" element={<AdminPage name="sociallinks" />} />
-            <Route exact path="/admin-education" element={<AdminPage name="education" />} />
-            <Route exact path="/admin-experiance" element={<AdminPage name="experiance" />} />
-            <Route exact path="/admin-skills" element={<AdminPage name="skills" />} />
-            <Route exact path="/admin-projects" element={<AdminPage name="projects" />} />
-            <Route exact path="/admin-posts" element={<AdminPage name="posts" />} />
-            <Route exact path="/admin-certificates" element={<AdminPage name="certificates" />} />
+              <Route path="/signin" element={
+                <SignIn />} />
 
-            {/* <Route exact path="/admin-profile" element={<AdminProfile />} /> */}
-            {/* <Route exact path="/admin-about" element={<AdminAbout />} />
-            <Route exact path="/admin-sociallinks" element={<AdminSocialLinks />} />
-            <Route exact path="/admin-education" element={<AdminEducation />} />
-            <Route exact path="/admin-experiance" element={<AdminExperiance />} />
-            <Route exact path="/admin-skills" element={<AdminSkills />} />
-            <Route exact path="/admin-projects" element={<AdminProjects />} />
-            <Route exact path="/admin-posts" element={<AdminPosts />} />
-            <Route exact path="/admin-certificates" element={<AdminCertificates />} /> */}
+              {/* admin pages */}
+              <Route path="/admin" element={
+                <PrivateRoute >
+                  <AdminPage name="admin" />
+                </PrivateRoute>} />
 
-          </Routes>
+              <Route exact path="/admin-profile" element={
+                <PrivateRoute >
+                  <AdminPage name="profile" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-about" element={
+                <PrivateRoute >
+                  <AdminPage name="about" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-sociallinks" element={
+                <PrivateRoute >
+                  <AdminPage name="sociallinks" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-education" element={
+                <PrivateRoute >
+                  <AdminPage name="education" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-experiance" element={
+                <PrivateRoute >
+                  <AdminPage name="experiance" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-skills" element={
+                <PrivateRoute >
+                  <AdminPage name="skills" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-projects" element={
+                <PrivateRoute >
+                  <AdminPage name="projects" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-posts" element={
+                <PrivateRoute >
+                  <AdminPage name="posts" />
+                </PrivateRoute>} />
+
+              <Route exact path="/admin-certificates" element={
+                <PrivateRoute >
+                  <AdminPage name="certificates" />
+                </PrivateRoute>} />
+
+            </Routes>
+          </AuthProvider>
 
         </div>
 

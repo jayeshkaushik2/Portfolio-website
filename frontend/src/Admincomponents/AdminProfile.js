@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminProfile = () => {
-    const [profileData, setprofileData] = useState(null)
-
     const [User, setUser] = useState("")
     const [Name, setName] = useState("")
     const [Profile_image, setProfile_image] = useState("")
@@ -17,8 +16,6 @@ export const AdminProfile = () => {
     let getProfileData = async () => {
         let response = await fetch('/api/get-profile/')
         let data = await response.json()
-        console.log("profile data:", data)
-        setprofileData(data)
         setUser(data["user"])
         setName(data["name"])
         setProfile_image(data["profile_image"])
@@ -27,22 +24,21 @@ export const AdminProfile = () => {
         setProfession(data["profession"])
     }
 
+    let {AuthTokens} = useContext(AuthContext)
+
     let postProfileData = async (data) => {
-        console.log("data", data)
         let requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'multipart/form-data' },
+            headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+String(AuthTokens.access) },
             body: JSON.stringify(data)
         };
         let response = await fetch('/api/get-profile/', requestOptions);
         let response_data = await response.json();
-        setprofileData(response_data)
         getProfileData()
     }
 
     const submitProfileData = (e) => {
         e.preventDefault()
-        console.log("submiting..", e.target.files)
         let data = {
                 user: User,
                 name: Name,
@@ -52,7 +48,6 @@ export const AdminProfile = () => {
                 profession: Profession,
             }
         postProfileData(data)
-        console.log(profileData)
     }
 
     return (

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminSocialLinks = () => {
     const [Email, setEmail] = useState("")
@@ -13,18 +14,18 @@ export const AdminSocialLinks = () => {
     let getSocailLinkDetails = async () => {
         let response = await fetch('/api/get-sociallinks/')
         let data = await response.json()
-        console.log("social links details:", data, data["email"])
         setEmail(data["email"])
         setLinkedin(data["linkedin"])
         setGithub(data["github"])
         setCoding(data["coding"])
     }
 
+    let {AuthTokens} = useContext(AuthContext)
+
     let postSocialLinkData = async (data) => {
-        console.log("data", data)
         let requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+String(AuthTokens.access) },
             body: JSON.stringify(data)
         };
         let response = await fetch('/api/get-sociallinks/', requestOptions);

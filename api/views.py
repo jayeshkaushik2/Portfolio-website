@@ -5,6 +5,24 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets
 from home.models import Education, Experience, Post, Profile, Project, Skill, SocialLink
 from .serializers import PostSz, ProfileSz, SocialLinkSz, EducationSz, ExperienceSz, SkillSz, ProjectSz
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -38,8 +56,11 @@ class Getpost(viewsets.ModelViewSet):
         return posts
     
     def perform_create(self, serializer):
-        post = Post.objects.create(user=User.objects.all()[0])
-        serializer.save(instance=post)
+        if self.request.user.is_authenticated:
+            user_id = self.request.user
+            post = Post.objects.create(user=user_id)
+            serializer.save(instance=post)
+        return Response({"error":"Unable to update Data"}, status=401)
 
 @api_view(['GET'])
 def getPost(request, pk):
@@ -49,7 +70,6 @@ def getPost(request, pk):
     '''
     post = Post.objects.get(id=pk)
     serializer = PostSz(post, many=False)
-
     return Response(serializer.data)
 
 
@@ -76,14 +96,15 @@ def getProfile(request):
 
         return Response(serializer.data)
     else:
-        user_id = 1
-        breakpoint()
-        profile, created = Profile.objects.get_or_create(user=user_id)
-        sz = ProfileSz(instance=profile, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
-        return Response({"success":False})
+        if request.user.is_authenticated:
+            user_id = request.user
+            profile, created = Profile.objects.get_or_create(user=user_id)
+            sz = ProfileSz(instance=profile, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
+
 
 @api_view(['GET', 'POST'])
 def getSocialLink(request):
@@ -100,13 +121,16 @@ def getSocialLink(request):
         sz = SocialLinkSz(instance=social_links, many=False)
         return Response(sz.data)
     else:
-        user_id = 1
-        sociallinks = SocialLink.objects.get(user=user_id)
-        sz = SocialLinkSz(instance=sociallinks, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
-        return Response({"success":False})
+        if request.user.is_authenticated:
+            user_id = request.user
+            sociallinks = SocialLink.objects.get(user=user_id)
+            sz = SocialLinkSz(instance=sociallinks, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
+
+
 
 @api_view(['GET', 'POST'])
 def getEducation(request):
@@ -123,16 +147,17 @@ def getEducation(request):
         sz = EducationSz(instance=education_details, many=True)
         return Response(sz.data)
     else:
-        user_id = 1
-        if "school" in request.data or "course" in request.data:
-            edu = Education.objects.filter(user=user_id, school=request.data["school"], course=request.data["course"]).first()
-        if edu is None:
-            edu = Education.objects.create(user=User.objects.all()[0])
-        sz = EducationSz(instance=edu, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
-        return Response({"success":False})
+        if request.user.is_authenticated:
+            user_id = request.user
+            if "school" in request.data or "course" in request.data:
+                edu = Education.objects.filter(user=user_id, school=request.data["school"], course=request.data["course"]).first()
+            if edu is None:
+                edu = Education.objects.create(user=user_id)
+            sz = EducationSz(instance=edu, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -153,12 +178,14 @@ def getExperience(request):
         
         return Response(sz.data)
     elif request.method == 'POST':
-        user_id = 1
-        experience = Experience.objects.create(user=User.objects.all()[0])
-        sz = ExperienceSz(instance=experience, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
+        if request.user.is_authenticated:
+            user_id = request.user
+            experience = Experience.objects.create(user=user_id)
+            sz = ExperienceSz(instance=experience, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
     else:
         pass
 
@@ -178,12 +205,14 @@ def getSkill(request):
         sz = SkillSz(instance=skill_details, many=True)
         return Response(sz.data)
     elif request.method == 'POST':
-        user_id = 1
-        skill = Skill.objects.create(user=User.objects.all()[0])
-        sz = SkillSz(instance=skill, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
+        if request.user.is_authenticated:
+            user_id = request.user
+            skill = Skill.objects.create(user=user_id)
+            sz = SkillSz(instance=skill, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
     else:
         pass
 
@@ -202,11 +231,13 @@ def getProject(request):
         sz = ProjectSz(instance=project_details, many=True)
         return Response(sz.data)
     elif request.method == 'POST':
-        user_id = 1
-        project = Project.objects.create(user=User.objects.all()[0])
-        sz = ProjectSz(instance=project, data=request.data, partial=True)
-        if sz.is_valid(raise_exception=True):
-            sz.save()
-            return Response(sz.data)
+        if request.user.is_authenticated:
+            user_id = request.user
+            project = Project.objects.create(user=user_id)
+            sz = ProjectSz(instance=project, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
     else:
         pass

@@ -32,49 +32,42 @@ function Homepage() {
     let getProfileDetails = async () => {
         let response = await fetch('/api/get-profile/')
         let data = await response.json()
-        console.log("profile details:", data)
         setprofileDetails(data)
     }
 
     let getSocailLinkDetails = async () => {
         let response = await fetch('/api/get-sociallinks/')
         let data = await response.json()
-        console.log("social links details:", data)
         setSocailLinkDetails(data)
     }
 
     let getEducationDetails = async () => {
         let response = await fetch('/api/get-education/')
         let data = await response.json()
-        console.log("education details:", data)
         setEducationDetails(data)
     }
 
     let getPosts = async () => {
         let response = await fetch('/api/get-posts/')
         let data = await response.json()
-        console.log('posts data:', data)
         setPosts(data)
     }
 
     let getExperience = async () => {
         let response = await fetch('/api/get-experience/')
         let data = await response.json()
-        console.log('experience data:', data)
         setExperience(data)
     }
 
     let getSkill = async () => {
         let response = await fetch('/api/get-skill/')
         let data = await response.json()
-        console.log('skills data:', data)
         setSkills(data)
     }
 
     let getProject = async () => {
         let response = await fetch('/api/get-project/')
         let data = await response.json()
-        console.log('projects data:', data)
         setProjects(data)
     }
 

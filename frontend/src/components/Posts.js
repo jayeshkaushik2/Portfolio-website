@@ -10,10 +10,8 @@ export default function Posts(props) {
     function profileView(index) {
         let img = document.getElementById(`${index}`)
         let ViewPost = document.getElementById(`${index}`)
-
         if (Photo) {
             setPhoto(false)
-            console.log("this is True here!!!")
             img.style.opacity = "1"
             ViewPost.style.display = "none"
         }
@@ -33,7 +31,7 @@ export default function Posts(props) {
                     <div className="postdiv" key={index}>
                         <div className="heading">
                             <h6 className="title"> {props.posts[index]["post_title"]} </h6>
-                            <Link to={"/post/" + post.id} className="link-primary viewPostLink" id={index} element={<Post />}>View more</Link>
+                            <Link to={`/post/${post.id}/`} className="link-primary viewPostLink" id={index}>View more</Link>
                         </div>
                         <div className="postimageDiv">
                             <img src={props.posts[index]["post_image"]} onClick={profileView} className="postimage" alt="postImg" id={index} />

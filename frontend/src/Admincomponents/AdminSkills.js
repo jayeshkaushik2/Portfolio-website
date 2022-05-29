@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import AuthContext from '../context/AuthContext';
 
 export const AdminSkills = () => {
   const [SkillData, setSkillData] = useState("")
@@ -11,34 +12,33 @@ export const AdminSkills = () => {
   let getSkillData = async () => {
     let response = await fetch('/api/get-skill/')
     let data = await response.json()
-    console.log('skills data:', data)
     setSkillData(data)
   }
 
+  let {AuthTokens} = useContext(AuthContext)
+
   let postSkillData = async (data) => {
-    console.log("data", data)
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+String(AuthTokens.access) },
       body: JSON.stringify(data)
     };
     let response = await fetch('/api/get-skill/', requestOptions);
     let response_data = await response.json();
-    console.log(response_data)
     getSkillData()
   }
 
-  let deleteSkillData = async (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Bearer my-token',
-        'My-Custom-Header': 'foobar'
-      }
-    };
-    let response = await fetch(`/api/get-skill/${id}/`, requestOptions)
-    getSkillData()
-  }
+  // let deleteSkillData = async (id) => {
+  //   const requestOptions = {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Authorization': 'Bearer my-token',
+  //       'My-Custom-Header': 'foobar'
+  //     }
+  //   };
+  //   let response = await fetch(`/api/get-skill/${id}/`, requestOptions)
+  //   getSkillData()
+  // }
 
 
   const submitSkillData = (e) => {
