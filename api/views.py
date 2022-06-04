@@ -52,7 +52,7 @@ class Getpost(viewsets.ModelViewSet):
     '''
     serializer_class = PostSz
     def get_queryset(self):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by("-id")
         return posts
     
     def perform_create(self, serializer):
