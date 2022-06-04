@@ -19,7 +19,7 @@ export const AdminEducation = () => {
   let getEducationData = async () => {
     let response = await fetch('/api/get-education/')
     let data = await response.json()
-    setEduData(data)
+    setEduData(data["results"])
   }
 
   let postEducationData = async (data) => {
@@ -47,6 +47,14 @@ export const AdminEducation = () => {
       marks: Marks,
     }
     postEducationData(data)
+  }
+
+  const handleDeleteEdu = (e) => {
+    let id = e.target.id
+    console.log('id is', id, e.target.value)
+    let response =  fetch(`/api/get-education/${id}/`, { method: 'DELETE' })
+    // let response_data = await response.json();
+    console.log("deleted status", response)
   }
 
   return (
@@ -109,7 +117,7 @@ export const AdminEducation = () => {
                 <td>{EduData[index]["end"]}</td>
                 <td>{EduData[index]["marks"]}</td>
                 <td style={{textAlign:'center'}}>
-                  <button className="btn" type="button" onClick={""}>
+                  <button className="btn" id={EduData[index]["id"]} type="button" onClick={handleDeleteEdu}>
                     <i className="fa fa-trash"></i>
                   </button>
                 </td>

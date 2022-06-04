@@ -43,13 +43,6 @@ def admin_login(request, pk):
 
 
 class Getpost(viewsets.ModelViewSet):
-    '''
-    1. getting all the posts from the database.
-    2. serializing the data for the json response.
-    3. Now we have to get the data from serialized format (serializer.data)
-
-    Note: "many" --> this specifies if it should converts a single object(when false) or multiple objects(when true)
-    '''
     serializer_class = PostSz
     def get_queryset(self):
         posts = Post.objects.all().order_by("-id")
@@ -61,16 +54,6 @@ class Getpost(viewsets.ModelViewSet):
             post = Post.objects.create(user=user_id)
             serializer.save(instance=post)
         return Response({"error":"Unable to update Data"}, status=401)
-
-@api_view(['GET'])
-def getPost(request, pk):
-    '''
-    1. getting a specific post using its id.
-    2. since we want only one post so --> many=False
-    '''
-    post = Post.objects.get(id=pk)
-    serializer = PostSz(post, many=False)
-    return Response(serializer.data)
 
 
 @api_view(['GET', 'POST'])
@@ -131,113 +114,57 @@ def getSocialLink(request):
         return Response({"error":"Unable to update Data"}, status=401)
 
 
-
-@api_view(['GET', 'POST'])
-def getEducation(request):
-    if request.method == 'GET':
-        user_id = 1
-        try:
-            user_id = request.user.id
-        except Exception as e:
-            print("Failed to get the user id...")
-            pass
-        if user_id is None:
-            user_id = 1
-        education_details = Education.objects.filter(user=user_id)
-        sz = EducationSz(instance=education_details, many=True)
-        return Response(sz.data)
-    else:
-        if request.user.is_authenticated:
-            user_id = request.user
-            if "school" in request.data or "course" in request.data:
-                edu = Education.objects.filter(user=user_id, school=request.data["school"], course=request.data["course"]).first()
-            if edu is None:
-                edu = Education.objects.create(user=user_id)
-            sz = EducationSz(instance=edu, data=request.data, partial=True)
-            if sz.is_valid(raise_exception=True):
-                sz.save()
-                return Response(sz.data)
+class EducationApi(viewsets.ModelViewSet):
+    serializer_class = EducationSz
+    def get_queryset(self):
+        educations = Education.objects.all()
+        return educations
+    
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            user_id = self.request.user
+            education = Education.objects.create(user=user_id)
+            serializer.save(instance=education)
         return Response({"error":"Unable to update Data"}, status=401)
 
 
-@api_view(['GET', 'POST', 'DELETE'])
-def getExperience(request):
-    if request.method == 'GET':
-        user_id = 1
-        try:
-            user_id = request.user.id
-        except Exception as e:
-            print("Failed to get the user id...")
-            pass
-        
-        if user_id is None:
-            user_id = 1
-        
-        experience_details = Experience.objects.filter(user=user_id)
-        sz = ExperienceSz(instance=experience_details, many=True)
-        
-        return Response(sz.data)
-    elif request.method == 'POST':
-        if request.user.is_authenticated:
-            user_id = request.user
+class ExperienceApi(viewsets.ModelViewSet):
+    serializer_class = ExperienceSz
+    def get_queryset(self):
+        experiences = Experience.objects.all()
+        return experiences
+    
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            user_id = self.request.user
             experience = Experience.objects.create(user=user_id)
-            sz = ExperienceSz(instance=experience, data=request.data, partial=True)
-            if sz.is_valid(raise_exception=True):
-                sz.save()
-                return Response(sz.data)
+            serializer.save(instance=experience)
         return Response({"error":"Unable to update Data"}, status=401)
-    else:
-        pass
 
 
-@api_view(['GET', 'POST', 'DELETE'])
-def getSkill(request):
-    if request.method == 'GET':
-        user_id = 1
-        try:
-            user_id = request.user.id
-        except Exception as e:
-            print("Failed to get the user id...")
-            pass
-        if user_id is None:
-            user_id = 1
-        skill_details = Skill.objects.filter(user=user_id)
-        sz = SkillSz(instance=skill_details, many=True)
-        return Response(sz.data)
-    elif request.method == 'POST':
-        if request.user.is_authenticated:
-            user_id = request.user
+class SkillApi(viewsets.ModelViewSet):
+    serializer_class = SkillSz
+    def get_queryset(self):
+        skills = Skill.objects.all()
+        return skills
+    
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            user_id = self.request.user
             skill = Skill.objects.create(user=user_id)
-            sz = SkillSz(instance=skill, data=request.data, partial=True)
-            if sz.is_valid(raise_exception=True):
-                sz.save()
-                return Response(sz.data)
+            serializer.save(instance=skill)
         return Response({"error":"Unable to update Data"}, status=401)
-    else:
-        pass
 
-@api_view(['GET', 'POST', 'DELETE'])
-def getProject(request):
-    if request.method == 'GET':
-        user_id = 1
-        try:
-            user_id = request.user.id
-        except Exception as e:
-            print("Failed to get the user id...")
-            pass
-        if user_id is None:
-            user_id = 1
-        project_details = Project.objects.filter(user=user_id)
-        sz = ProjectSz(instance=project_details, many=True)
-        return Response(sz.data)
-    elif request.method == 'POST':
-        if request.user.is_authenticated:
-            user_id = request.user
+
+class ProjectApi(viewsets.ModelViewSet):
+    serializer_class = ProjectSz
+    def get_queryset(self):
+        projects = Project.objects.all()
+        return projects
+    
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            user_id = self.request.user
             project = Project.objects.create(user=user_id)
-            sz = ProjectSz(instance=project, data=request.data, partial=True)
-            if sz.is_valid(raise_exception=True):
-                sz.save()
-                return Response(sz.data)
+            serializer.save(instance=project)
         return Response({"error":"Unable to update Data"}, status=401)
-    else:
-        pass
