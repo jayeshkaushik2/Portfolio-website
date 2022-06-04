@@ -1,5 +1,6 @@
 __pycache____pycache__/
 *.py[cod]
-
+*.pyc,*.pyo
+db.sqlite3
 env/
 media/
