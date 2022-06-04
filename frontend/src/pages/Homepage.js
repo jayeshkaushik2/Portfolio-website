@@ -79,7 +79,7 @@ function Homepage() {
 
             <About about={profileDetails["about_user"]} />
 
-            {socailLinkDetails && socailLinkDetails["email"] != "" && <SocialLinks socailLinkDetails={socailLinkDetails} />}
+            {socailLinkDetails && socailLinkDetails["email"] !== "" && <SocialLinks socailLinkDetails={socailLinkDetails} />}
             
             <Education educationDetails={educationDetails} />
 

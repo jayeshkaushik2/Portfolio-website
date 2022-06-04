@@ -10,7 +10,7 @@ export const AdminEducation = () => {
   const [End, setEnd] = useState("")
   const [Marks, setMarks] = useState("")
 
-  let {AuthTokens} = useContext(AuthContext)
+  let { AuthTokens } = useContext(AuthContext)
 
   useEffect(() => {
     getEducationData()
@@ -27,7 +27,7 @@ export const AdminEducation = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+ String(AuthTokens.access)
+        'Authorization': 'Bearer ' + String(AuthTokens.access)
       },
       body: JSON.stringify(data)
     };
@@ -95,6 +95,7 @@ export const AdminEducation = () => {
               <th scope="col">Start</th>
               <th scope="col">End</th>
               <th scope="col">Marks</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {EduData ? EduData.map((key, index) => (
@@ -107,6 +108,11 @@ export const AdminEducation = () => {
                 <td>{EduData[index]["start"]}</td>
                 <td>{EduData[index]["end"]}</td>
                 <td>{EduData[index]["marks"]}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={""}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))

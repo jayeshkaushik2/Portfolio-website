@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import '../assests/Posts.css'
-import Post from '../pages/Post'
 import { Link } from 'react-router-dom'
 
 

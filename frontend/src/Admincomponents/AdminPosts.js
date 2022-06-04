@@ -14,7 +14,7 @@ export const AdminPosts = () => {
   let getPostData = async () => {
     let response = await fetch('/api/get-posts/')
     let data = await response.json()
-    setPostData(data)
+    setPostData(data["results"])
   }
 
   let {AuthTokens} = useContext(AuthContext)
@@ -74,6 +74,7 @@ export const AdminPosts = () => {
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Posted on</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {PostData ? PostData.map((key, index) => (
@@ -89,6 +90,11 @@ export const AdminPosts = () => {
                   PostData[index]["post_description"]
                 }</td>
                 <td>{PostData[index]["post_date"]}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={""}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))

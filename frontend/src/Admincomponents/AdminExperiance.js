@@ -116,6 +116,7 @@ export const AdminExperiance = () => {
               <th scope="col">Start</th>
               <th scope="col">End</th>
               <th scope="col">Present</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {Experience ? Experience.map((key, index) => (
@@ -132,6 +133,11 @@ export const AdminExperiance = () => {
                 <td>{Experience[index]["start"]}</td>
                 <td>{Experience[index]["end"]}</td>
                 <td>{Experience[index]["is_active"] ? "Present" : ""}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={""}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))
