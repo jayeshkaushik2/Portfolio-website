@@ -8,4 +8,4 @@ function NotifyDataMsg(msg) {
     }
 }
 
-export default NotifyMsg;
+export default NotifyDataMsg;

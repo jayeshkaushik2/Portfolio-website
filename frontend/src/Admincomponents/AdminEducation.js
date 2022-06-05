@@ -66,11 +66,9 @@ export const AdminEducation = () => {
       let response = await fetch(`/api/get-education/${id}/`, { method: 'DELETE' })
       if (response.status === 204){
         getEducationData()
-        NotifyMsg()
       }
       else {
         alert('not found')
-        NotifyMsg()
       }
     }
   }
