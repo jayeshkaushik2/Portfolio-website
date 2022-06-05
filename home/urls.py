@@ -4,5 +4,4 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
-    path('admin/', admin.site.urls),
 ]
