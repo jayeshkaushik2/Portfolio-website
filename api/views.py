@@ -48,12 +48,18 @@ class Getpost(viewsets.ModelViewSet):
         posts = Post.objects.all().order_by("-id")
         return posts
     
-    def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
             user_id = self.request.user
-            post = Post.objects.create(user=user_id)
-            serializer.save(instance=post)
+            request.data["user"] = user_id.id
+            sz = self.serializer_class(data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
         return Response({"error":"Unable to update Data"}, status=401)
+    
+    def perform_create(self, serializer):
+        serializer.save(data=self.reqeust.data)
 
 
 @api_view(['GET', 'POST'])
@@ -123,8 +129,8 @@ class EducationApi(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             user_id = self.request.user
-            education = Education.objects.create(user=user_id)
-            sz = self.serializer_class(education, data=request.data, partial=True)
+            request.data["user"] = user_id.id
+            sz = self.serializer_class(data=request.data, partial=True)
             if sz.is_valid(raise_exception=True):
                 sz.save()
                 return Response(sz.data)
@@ -139,13 +145,19 @@ class ExperienceApi(viewsets.ModelViewSet):
     def get_queryset(self):
         experiences = Experience.objects.all()
         return experiences
+
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user_id = self.request.user
+            request.data["user"] = user_id.id
+            sz = self.serializer_class(data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
+        return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
-            user_id = self.request.user
-            experience = Experience.objects.create(user=user_id)
-            serializer.save(instance=experience)
-        return Response({"error":"Unable to update Data"}, status=401)
+        serializer.save(data=self.reqeust.data)
 
 
 class SkillApi(viewsets.ModelViewSet):
@@ -154,12 +166,18 @@ class SkillApi(viewsets.ModelViewSet):
         skills = Skill.objects.all()
         return skills
     
-    def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
             user_id = self.request.user
-            skill = Skill.objects.create(user=user_id)
-            serializer.save(instance=skill)
+            request.data["user"] = user_id.id
+            sz = self.serializer_class(data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
         return Response({"error":"Unable to update Data"}, status=401)
+    
+    def perform_create(self, serializer):
+        serializer.save(data=self.reqeust.data)
 
 
 class ProjectApi(viewsets.ModelViewSet):
@@ -168,9 +186,15 @@ class ProjectApi(viewsets.ModelViewSet):
         projects = Project.objects.all()
         return projects
     
-    def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
             user_id = self.request.user
-            project = Project.objects.create(user=user_id)
-            serializer.save(instance=project)
+            request.data["user"] = user_id.id
+            sz = self.serializer_class(data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
         return Response({"error":"Unable to update Data"}, status=401)
+    
+    def perform_create(self, serializer):
+        serializer.save(data=self.reqeust.data)

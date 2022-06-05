@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
+import NotifyDataMsg from '../Notifications/NotifyDataMsg';
 
 export const AdminSkills = () => {
   const [SkillData, setSkillData] = useState("")
@@ -12,7 +13,7 @@ export const AdminSkills = () => {
   let getSkillData = async () => {
     let response = await fetch('/api/get-skill/')
     let data = await response.json()
-    setSkillData(data)
+    setSkillData(data["results"])
   }
 
   let {AuthTokens} = useContext(AuthContext)
@@ -28,17 +29,18 @@ export const AdminSkills = () => {
     getSkillData()
   }
 
-  // let deleteSkillData = async (id) => {
-  //   const requestOptions = {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Authorization': 'Bearer my-token',
-  //       'My-Custom-Header': 'foobar'
-  //     }
-  //   };
-  //   let response = await fetch(`/api/get-skill/${id}/`, requestOptions)
-  //   getSkillData()
-  // }
+  const handleDeleteSkill = async (id) => {
+    let flag = NotifyDataMsg("Delete")
+    if (flag === true) {
+      let response = await fetch(`/api/get-skill/${id}/`, { method: 'DELETE' })
+      if (response.status === 204){
+        getSkillData()
+      }
+      else {
+        alert('not found')
+      }
+    }
+  }
 
 
   const submitSkillData = (e) => {
@@ -86,7 +88,7 @@ export const AdminSkills = () => {
                 <td>{index + 1}</td>
                 <td style={{ textAlign: "center" }}>{SkillData[index]["skill_name"]}</td>
                 <td style={{ textAlign: "center" }}>
-                  <button className="btn" index={SkillData[index]["id"]} onClick={DeleteSkillData}>
+                  <button className="btn" index={SkillData[index]["id"]} onClick={(e) => {handleDeleteSkill(SkillData[index]["id"])}}>
                     {/* <input value={SkillData[index]["id"]} hidden id="skill_id" /> */}
                     <i className="fa fa-trash"></i>
                   </button>
