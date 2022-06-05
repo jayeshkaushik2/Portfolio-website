@@ -120,12 +120,18 @@ class EducationApi(viewsets.ModelViewSet):
         educations = Education.objects.all()
         return educations
     
-    def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
             user_id = self.request.user
             education = Education.objects.create(user=user_id)
-            serializer.save(instance=education)
+            sz = self.serializer_class(education, data=request.data, partial=True)
+            if sz.is_valid(raise_exception=True):
+                sz.save()
+                return Response(sz.data)
         return Response({"error":"Unable to update Data"}, status=401)
+    
+    def perform_create(self, serializer):
+        serializer.save(data=self.reqeust.data)
 
 
 class ExperienceApi(viewsets.ModelViewSet):

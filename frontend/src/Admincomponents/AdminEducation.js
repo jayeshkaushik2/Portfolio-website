@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
+import NotifyDataMsg from '../Notifications/NotifyDataMsg';
 
 export const AdminEducation = () => {
   const [EduData, setEduData] = useState(null)
@@ -33,7 +34,17 @@ export const AdminEducation = () => {
     };
     let response = await fetch('/api/get-education/', requestOptions);
     let response_data = await response.json();
+    SetDataNull()
     getEducationData()
+  }
+
+  function SetDataNull() {
+    setCourse("")
+    setSchool("")
+    setStream("")
+    setStart("")
+    setEnd("")
+    setMarks("")
   }
 
   const submitEducationData = (e) => {
@@ -49,12 +60,19 @@ export const AdminEducation = () => {
     postEducationData(data)
   }
 
-  const handleDeleteEdu = (e) => {
-    let id = e.target.id
-    console.log('id is', id, e.target.value)
-    let response =  fetch(`/api/get-education/${id}/`, { method: 'DELETE' })
-    // let response_data = await response.json();
-    console.log("deleted status", response)
+  const handleDeleteEdu = async (id) => {
+    let flag = NotifyDataMsg("Delete")
+    if (flag === true) {
+      let response = await fetch(`/api/get-education/${id}/`, { method: 'DELETE' })
+      if (response.status === 204){
+        getEducationData()
+        NotifyMsg()
+      }
+      else {
+        alert('not found')
+        NotifyMsg()
+      }
+    }
   }
 
   return (
@@ -103,7 +121,7 @@ export const AdminEducation = () => {
               <th scope="col">Start</th>
               <th scope="col">End</th>
               <th scope="col">Marks</th>
-              <th scope="col" style={{textAlign:'center'}}>Delete</th>
+              <th scope="col" style={{ textAlign: 'center' }}>Delete</th>
             </tr>
           </thead>
           {EduData ? EduData.map((key, index) => (
@@ -116,8 +134,8 @@ export const AdminEducation = () => {
                 <td>{EduData[index]["start"]}</td>
                 <td>{EduData[index]["end"]}</td>
                 <td>{EduData[index]["marks"]}</td>
-                <td style={{textAlign:'center'}}>
-                  <button className="btn" id={EduData[index]["id"]} type="button" onClick={handleDeleteEdu}>
+                <td style={{ textAlign: 'center' }}>
+                  <button className="btn" id={EduData[index]["id"]} type="button" onClick={(e) => handleDeleteEdu(EduData[index]["id"])}>
                     <i className="fa fa-trash"></i>
                   </button>
                 </td>
