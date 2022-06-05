@@ -44,7 +44,7 @@ function Homepage() {
     let getEducationDetails = async () => {
         let response = await fetch('/api/get-education/')
         let data = await response.json()
-        setEducationDetails(data)
+        setEducationDetails(data["results"])
     }
 
     let getPosts = async () => {
@@ -56,19 +56,19 @@ function Homepage() {
     let getExperience = async () => {
         let response = await fetch('/api/get-experience/')
         let data = await response.json()
-        setExperience(data)
+        setExperience(data["results"])
     }
 
     let getSkill = async () => {
         let response = await fetch('/api/get-skill/')
         let data = await response.json()
-        setSkills(data)
+        setSkills(data["results"])
     }
 
     let getProject = async () => {
         let response = await fetch('/api/get-project/')
         let data = await response.json()
-        setProjects(data)
+        setProjects(data["results"])
     }
 
     return (
