@@ -21,10 +21,11 @@ export const AdminPosts = () => {
   let {AuthTokens} = useContext(AuthContext)
 
   let postPostData = async (data) => {
+    // e.preventDefault()
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+String(AuthTokens.access) },
-      body: JSON.stringify(data)
+      headers: { 'Authorization': 'Bearer '+String(AuthTokens.access) },
+      body: data
     };
     let response = await fetch('/api/get-posts/', requestOptions);
     let response_data = await response.json();
@@ -37,12 +38,11 @@ export const AdminPosts = () => {
       alert("Please fill up required fields.")
     }
     else {
-      let data = {
-        post_title: Post_Title,
-        post_description: Post_Description,
-        post_image: Post_Image
-      }
-      postPostData(data)
+      const dataa = new FormData();
+      dataa.append('post_title', Post_Title)
+      dataa.append('post_description', Post_Description)
+      dataa.append('post_image', Post_Image, Post_Image.name)
+      postPostData(dataa)
     }
   }
 

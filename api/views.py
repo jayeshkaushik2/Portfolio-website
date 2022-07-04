@@ -41,9 +41,12 @@ def admin_login(request, pk):
     else:
         return HttpResponse("This is post")
 
+from rest_framework.parsers import MultiPartParser, FileUploadParser
 
 class Getpost(viewsets.ModelViewSet):
     serializer_class = PostSz
+    parser_classes = (MultiPartParser, FileUploadParser)
+
     def get_queryset(self):
         posts = Post.objects.all().order_by("-id")
         return posts
@@ -59,7 +62,7 @@ class Getpost(viewsets.ModelViewSet):
         return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        serializer.save(data=self.reqeust.data)
+        serializer.save(data=self.request.data)
 
 
 @api_view(['GET', 'POST'])
@@ -68,21 +71,8 @@ def getProfile(request):
     This will give us the profile image of the user
     '''
     if request.method == "GET":
-        user_id = 1
-        try:
-            print("trying to get user id...")
-            user_id = request.user.id
-            print(user_id)
-        except Exception as e:
-            print("Failed to get user id...")
-            pass
-        
-        if user_id is None:
-            user_id = 1
-
-        profile = Profile.objects.get(user=user_id)
+        profile = Profile.objects.all().first()
         serializer = ProfileSz(profile, many=False)
-
         return Response(serializer.data)
     else:
         if request.user.is_authenticated:
@@ -98,15 +88,7 @@ def getProfile(request):
 @api_view(['GET', 'POST'])
 def getSocialLink(request):
     if request.method == "GET":
-        user_id = 1
-        try:
-            user_id = request.user.id
-        except Exception as e:
-            print("failed to get user id...")
-            pass
-        if user_id is None:
-            user_id = 1
-        social_links = SocialLink.objects.get(user=user_id)
+        social_links = SocialLink.objects.all().first()
         sz = SocialLinkSz(instance=social_links, many=False)
         return Response(sz.data)
     else:
@@ -137,7 +119,7 @@ class EducationApi(viewsets.ModelViewSet):
         return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        serializer.save(data=self.reqeust.data)
+        serializer.save(data=self.request.data)
 
 
 class ExperienceApi(viewsets.ModelViewSet):
@@ -157,7 +139,7 @@ class ExperienceApi(viewsets.ModelViewSet):
         return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        serializer.save(data=self.reqeust.data)
+        serializer.save(data=self.request.data)
 
 
 class SkillApi(viewsets.ModelViewSet):
@@ -177,7 +159,7 @@ class SkillApi(viewsets.ModelViewSet):
         return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        serializer.save(data=self.reqeust.data)
+        serializer.save(data=self.request.data)
 
 
 class ProjectApi(viewsets.ModelViewSet):
@@ -197,4 +179,4 @@ class ProjectApi(viewsets.ModelViewSet):
         return Response({"error":"Unable to update Data"}, status=401)
     
     def perform_create(self, serializer):
-        serializer.save(data=self.reqeust.data)
+        serializer.save(data=self.request.data)

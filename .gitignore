@@ -4,3 +4,5 @@ __pycache____pycache__/
 db.sqlite3
 env/
 media/
+.env
+.vscode
