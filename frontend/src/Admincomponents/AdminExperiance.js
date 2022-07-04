@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
+import NotifyDataMsg from '../Notifications/NotifyDataMsg';
 
 export const AdminExperiance = () => {
   const [Experience, setExperience] = useState(null)
@@ -18,7 +19,7 @@ export const AdminExperiance = () => {
   let getExperienceDate = async () => {
     let response = await fetch('/api/get-experience/')
     let data = await response.json()
-    setExperience(data)
+    setExperience(data["results"])
   }
   
   let {AuthTokens} = useContext(AuthContext)
@@ -65,6 +66,19 @@ export const AdminExperiance = () => {
 
   function DetailedView() {
     console.log("details viewed")
+  }
+
+  const handleDeleteExp = async (id) => {
+    let flag = NotifyDataMsg("Delete")
+    if (flag === true) {
+      let response = await fetch(`/api/get-experience/${id}/`, { method: 'DELETE' })
+      if (response.status === 204){
+        getExperienceDate()
+      }
+      else {
+        alert('not found')
+      }
+    }
   }
 
   return (
@@ -116,6 +130,7 @@ export const AdminExperiance = () => {
               <th scope="col">Start</th>
               <th scope="col">End</th>
               <th scope="col">Present</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {Experience ? Experience.map((key, index) => (
@@ -132,6 +147,11 @@ export const AdminExperiance = () => {
                 <td>{Experience[index]["start"]}</td>
                 <td>{Experience[index]["end"]}</td>
                 <td>{Experience[index]["is_active"] ? "Present" : ""}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={(e) => {handleDeleteExp(Experience[index]["id"])}}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))

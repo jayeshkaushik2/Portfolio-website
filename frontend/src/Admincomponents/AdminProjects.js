@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
+import NotifyDataMsg from '../Notifications/NotifyDataMsg';
 
 export const AdminProjects = () => {
   const [ProjectData, setProjectData] = useState(null)
@@ -17,7 +18,7 @@ export const AdminProjects = () => {
   let getProjectData = async () => {
     let response = await fetch('/api/get-project/')
     let data = await response.json()
-    setProjectData(data)
+    setProjectData(data["results"])
   }
 
   let {AuthTokens} = useContext(AuthContext)
@@ -60,6 +61,19 @@ export const AdminProjects = () => {
     else {
       document.getElementById("end_date_project").style.display = "flex"
       setIsActive(false)
+    }
+  }
+
+  const handleDeleteProject = async (id) => {
+    let flag = NotifyDataMsg("Delete")
+    if (flag === true) {
+      let response = await fetch(`/api/get-project/${id}/`, { method: 'DELETE' })
+      if (response.status === 204){
+        getProjectData()
+      }
+      else {
+        alert('not found')
+      }
     }
   }
 
@@ -111,6 +125,7 @@ export const AdminProjects = () => {
               <th scope="col">Start</th>
               <th scope="col">End</th>
               <th scope="col">Is Active</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {ProjectData ? ProjectData.map((key, index) => (
@@ -129,6 +144,11 @@ export const AdminProjects = () => {
                 <td>{ProjectData[index]["start"]}</td>
                 <td>{ProjectData[index]["end"]}</td>
                 <td>{ProjectData[index]["is_active"] ? "On going" : ""}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={(e) => {handleDeleteProject(ProjectData[index]["id"])}}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))

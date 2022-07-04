@@ -5,6 +5,7 @@ from home.models import Education, Experience, Post, Profile, Project, Skill, So
 from drf_extra_fields.fields import Base64ImageField
 
 class PostSz(ModelSerializer):
+    post_image = serializers.ImageField(required=False)
     class Meta:
         model = Post
         # here fields can added as a list --> ['name', 'lastname', 'fields name'] or if you want to add all fields then you can you --> '__all__'
@@ -15,8 +16,8 @@ class ProfileSz(ModelSerializer):
     total_posts = serializers.SerializerMethodField()
     total_projects = serializers.SerializerMethodField()
     total_certificates = serializers.SerializerMethodField()
-    profile_image = Base64ImageField()
-    backprofile_image = Base64ImageField()
+    profile_image = serializers.ImageField(required=False)
+    backprofile_image = serializers.ImageField(required=False)
     class Meta:
         model = Profile
         fields = [

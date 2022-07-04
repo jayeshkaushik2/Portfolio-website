@@ -6,11 +6,20 @@ from rest_framework_simplejwt.views import (
 )
 
 router = routers.SimpleRouter()
+
 router.register(r'get-posts', views.Getpost, basename='posts')
+
+router.register(r'get-education', views.EducationApi, basename='educations')
+
+router.register(r'get-experience', views.ExperienceApi, basename='experiences')
+
+router.register(r'get-skill', views.SkillApi, basename='sklls')
+
+router.register(r'get-project', views.ProjectApi, basename='projects')
 
 urlpatterns = [
     # path('get-posts/', views.getPosts, name='posts'),
-    path('get-posts/<str:pk>/', views.getPost, name='post'),
+    # path('get-posts/<str:pk>/', views.getPost, name='post'),
 
     # path for profile login
     path('get-profile/', views.getProfile, name='profile'),
@@ -22,16 +31,16 @@ urlpatterns = [
     path('get-sociallinks/', views.getSocialLink, name='sociallinks'),
 
     # path for education details
-    path('get-education/', views.getEducation, name='educations'),
+    # path('get-education/', views.EducationApi, name='educations'),
 
     #path for experience details
-    path('get-experience/', views.getExperience, name='experiences'),
+    # path('get-experience/', views.getExperience, name='experiences'),
 
     #path for skill details
-    path('get-skill/', views.getSkill, name='skills'),
+    # path('get-skill/', views.getSkill, name='skills'),
 
     #path for project details
-    path('get-project/', views.getProject, name='projects'),
+    # path('get-project/', views.getProject, name='projects'),
 
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

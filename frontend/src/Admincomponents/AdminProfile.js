@@ -16,12 +16,12 @@ export const AdminProfile = () => {
     let getProfileData = async () => {
         let response = await fetch('/api/get-profile/')
         let data = await response.json()
-        setUser(data["user"])
-        setName(data["name"])
-        setProfile_image(data["profile_image"])
-        setBackprofile_image(data["backprofile_image"])
-        setAbout_user(data["about_user"])
-        setProfession(data["profession"])
+        setUser(data["user"]?data["user"]:"")
+        setName(data["name"]? data["name"]:"")
+        setProfile_image(data["profile_image"]?data["profile_image"]:"")
+        setBackprofile_image(data["backprofile_image"]?data["backprofile_image"]:"")
+        setAbout_user(data["about_user"]?data["about_user"]:"")
+        setProfession(data["profession"]?data["profession"]:"")
     }
 
     let {AuthTokens} = useContext(AuthContext)
@@ -29,25 +29,31 @@ export const AdminProfile = () => {
     let postProfileData = async (data) => {
         let requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+String(AuthTokens.access) },
-            body: JSON.stringify(data)
+            headers: { 'Authorization': 'Bearer '+String(AuthTokens.access) },
+            body: data
         };
         let response = await fetch('/api/get-profile/', requestOptions);
         let response_data = await response.json();
         getProfileData()
     }
 
+
     const submitProfileData = (e) => {
         e.preventDefault()
-        let data = {
-                user: User,
-                name: Name,
-                profile_image: Profile_image,
-                backprofile_image: Backprofile_image,
-                about_user: About_user,
-                profession: Profession,
-            }
-        postProfileData(data)
+        console.log(Profile_image, Profile_image.name)
+        const new_data = new FormData();
+        new_data.append('name', Name)
+
+        // TODO: have to fix image upload
+        // if (Profile_image !== null){
+        //     new_data.append('profile_image', Profile_image, Profile_image.name)
+        // }
+
+        // new_data.append('backprofile_image', Backprofile_image, Backprofile_image?.name)
+        new_data.append('about_user', About_user)
+        new_data.append('profession', Profession)
+        console.log("new data", new_data)
+        postProfileData(new_data)
     }
 
     return (
@@ -63,10 +69,10 @@ export const AdminProfile = () => {
                     <input type="file" className="form-control" id="inputGroupFile01" onChange={(e) => setProfile_image(e.target.files[0])} />
                 </div>
 
-                <div className="input-group mb-3">
+                {/* <div className="input-group mb-3">
                     <label className="input-group-text" htmlFor="inputGroupFile01">Upload Backgroud Image</label>
                     <input type="file" className="form-control" id="inputGroupFile01" onChange={(e) => setBackprofile_image(e.target.files[0])} />
-                </div>
+                </div> */}
 
                 <div className="input-group mb-3">
                     <span className="input-group-text">About</span>

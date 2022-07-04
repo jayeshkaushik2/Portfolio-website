@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
+import NotifyDataMsg from '../Notifications/NotifyDataMsg';
 
 export const AdminPosts = () => {
   const [PostData, setPostData] = useState(null)
@@ -14,16 +15,17 @@ export const AdminPosts = () => {
   let getPostData = async () => {
     let response = await fetch('/api/get-posts/')
     let data = await response.json()
-    setPostData(data)
+    setPostData(data["results"])
   }
 
   let {AuthTokens} = useContext(AuthContext)
 
   let postPostData = async (data) => {
+    // e.preventDefault()
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+String(AuthTokens.access) },
-      body: JSON.stringify(data)
+      headers: { 'Authorization': 'Bearer '+String(AuthTokens.access) },
+      body: data
     };
     let response = await fetch('/api/get-posts/', requestOptions);
     let response_data = await response.json();
@@ -36,12 +38,24 @@ export const AdminPosts = () => {
       alert("Please fill up required fields.")
     }
     else {
-      let data = {
-        post_title: Post_Title,
-        post_description: Post_Description,
-        post_image: Post_Image
+      const dataa = new FormData();
+      dataa.append('post_title', Post_Title)
+      dataa.append('post_description', Post_Description)
+      dataa.append('post_image', Post_Image, Post_Image.name)
+      postPostData(dataa)
+    }
+  }
+
+  const handleDeletePost = async (id) => {
+    let flag = NotifyDataMsg("Delete")
+    if (flag === true) {
+      let response = await fetch(`/api/get-project/${id}/`, { method: 'DELETE' })
+      if (response.status === 204){
+        getPostData()
       }
-      postPostData(data)
+      else {
+        alert('not found')
+      }
     }
   }
   return (
@@ -74,6 +88,7 @@ export const AdminPosts = () => {
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Posted on</th>
+              <th scope="col" style={{textAlign:'center'}}>Delete</th>
             </tr>
           </thead>
           {PostData ? PostData.map((key, index) => (
@@ -89,6 +104,11 @@ export const AdminPosts = () => {
                   PostData[index]["post_description"]
                 }</td>
                 <td>{PostData[index]["post_date"]}</td>
+                <td style={{textAlign:'center'}}>
+                  <button className="btn" type="button" onClick={(e) => {handleDeletePost(PostData[index]["id"])}}>
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           ))

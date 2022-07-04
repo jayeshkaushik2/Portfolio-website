@@ -19,17 +19,17 @@ class Profile(models.Model):
     profile_image = models.ImageField(blank=True, null=True)
     backprofile_image = models.ImageField(blank=True, null=True)
     about_user = models.TextField(null=True)
-    profession = models.CharField(null=True, max_length=255)
+    profession = models.CharField(null=True, max_length=255, blank=True)
 
     def __str__(self):
         return self.user.username
 
 class SocialLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    email = models.CharField(null=True, max_length=600)
-    linkedin = models.CharField(null=True, max_length=600)
-    github = models.CharField(null=True, max_length=600)
-    coding = models.CharField(null=True, max_length=600)
+    email = models.CharField(null=True, max_length=600, blank=True)
+    linkedin = models.CharField(null=True, max_length=600, blank=True)
+    github = models.CharField(null=True, max_length=600, blank=True)
+    coding = models.CharField(null=True, max_length=600, blank=True)
 
 class Education(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

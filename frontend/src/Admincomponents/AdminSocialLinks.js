@@ -36,6 +36,11 @@ export const AdminSocialLinks = () => {
         setCoding(response_data["coding"])
     }
 
+    // let DeleteSocialLinksData = async (data) => {
+    //     let response = fetch('/api/get-sociallinks/', { method: 'DELETE' })
+
+    // }
+
     const submitSocialLinksData = (e) => {
         e.preventDefault()
         let data = {
@@ -43,6 +48,17 @@ export const AdminSocialLinks = () => {
             linkedin: Linkedin,
             github: Github,
             coding: Coding
+        }
+        postSocialLinkData(data)
+    }
+
+    const handleDeleteSocialLinks = (e) => {
+        e.preventDefault()
+        let data = {
+            email: "",
+            linkedin: "",
+            github: "",
+            coding: ""
         }
         postSocialLinkData(data)
     }
@@ -70,6 +86,7 @@ export const AdminSocialLinks = () => {
             </div>
 
             <button type="submit" className="btn btn-primary" onClick={submitSocialLinksData}>Submit</button>
+            <button type="submit" className="btn btn-primary" style={{float: "right"}} onClick={handleDeleteSocialLinks}>Delete</button>
 
         </div>
     )
