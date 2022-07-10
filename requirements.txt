@@ -80,7 +80,6 @@ testresources==2.0.1
 tomli==2.0.1
 typing-extensions==4.1.1
 urllib3==1.25.8
-usb-creator==0.3.7
 virtualenv==20.14.1
 wadllib==1.3.3
 whitenoise==6.2.0
