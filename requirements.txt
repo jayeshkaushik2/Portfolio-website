@@ -20,7 +20,6 @@ django-extra-fields==3.0.2
 django-heroku==0.3.1
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
-duplicity==0.8.12.0
 entrypoints==0.3
 fasteners==0.14.1
 filelock==3.6.0
